@@ -2,3 +2,6 @@
 *.bluej
 *.class
 desktop.ini
+/bin/
+/.project
+/.classpath
