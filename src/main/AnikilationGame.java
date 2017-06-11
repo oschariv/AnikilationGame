@@ -1,9 +1,13 @@
 package main;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class AnikilationGame extends Application {
 
@@ -26,6 +30,30 @@ public class AnikilationGame extends Application {
 		escenario.setScene(escena);
 		escenario.setTitle("ANIKILATION GAME");
 
+		// Creamos la nave
+		Nave naveEspacial = new Nave(ANCHO_PANTALLA, ALTO_PANTALLA);
+		root.getChildren().add(naveEspacial);
+
+		// Creamos el timeline y el KeyFrame para dar movimiento al juego.
+		Timeline timeline = new Timeline();
+		KeyFrame keyframe = new KeyFrame(Duration.seconds(0.007), event -> {
+
+			// Movimiento de la nave espacial
+			naveEspacial.Mover();
+		});
+
+		escena.setOnKeyPressed(event -> {
+
+			if (event.getCode() == KeyCode.RIGHT && naveEspacial.getBoundsInParent().getMaxX() != escena.getWidth()) {
+				naveEspacial.moverIzquierda();
+			} else if (event.getCode() == KeyCode.LEFT && naveEspacial.getBoundsInParent().getMinX() != 0) {
+				naveEspacial.moverDerecha();
+			}
+		});
+
+		timeline.getKeyFrames().add(keyframe);
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.play();
 		// Mostramos el escenario completo.
 		escenario.show();
 	}
