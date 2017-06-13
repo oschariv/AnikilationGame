@@ -1,5 +1,8 @@
 package main;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -24,8 +27,9 @@ public class AnikilationGame extends Application {
 	// Atributos de clase AnikilationGame
 	private static final int ANCHO_PANTALLA = 600;
 	private static final int ALTO_PANTALLA = 800;
-	private int balaSpeed = 0;
 	private boolean disparo = false;
+	private int tiempoEnSegundos = 0;
+	private int contadorAliensGenerados = 1;
 
 	/**
 	 * Metodo que inicia el juego.
@@ -49,6 +53,9 @@ public class AnikilationGame extends Application {
 		Nave naveEspacial = new Nave(ANCHO_PANTALLA, ALTO_PANTALLA);
 		root.getChildren().add(naveEspacial);
 
+		// Creamos un objeto para la gestion de arrayList.
+		GestionArrayList gestionArraylist = new GestionArrayList();
+
 		// Creamos un alien
 		Enemigo alien = new Enemigo(ANCHO_PANTALLA, ALTO_PANTALLA);
 		root.getChildren().add(alien);
@@ -62,7 +69,7 @@ public class AnikilationGame extends Application {
 			} else if (event.getCode() == KeyCode.LEFT && naveEspacial.getBoundsInParent().getMinX() != 0) {
 				naveEspacial.moverDerecha();
 			} else if (event.getCode() == KeyCode.SPACE) {
-				naveEspacial.disparar(root);
+				gestionArraylist.dispararBala(root, naveEspacial);
 				disparo = true;
 			}
 		});
@@ -92,19 +99,12 @@ public class AnikilationGame extends Application {
 
 			// Movimiento de la bala
 			if (disparo) {
-				// System.out.println("nave =" +
-				// naveEspacial.getBoundsInParent());
-				for (int i = 0; i < naveEspacial.getArrayBalas().size(); i++) {
-					naveEspacial.getArrayBalas().get(i).moverBala();
-					// System.out.println("bala =" +
-					// naveEspacial.getArrayBalas().get(i).getBoundsInParent());
-
-					if (naveEspacial.getArrayBalas().get(i).getBoundsInParent().getMinY() == 0) {
-						naveEspacial.getArrayBalas().get(i).setVisible(false);
-						naveEspacial.getArrayBalas().remove(i);
+				for (int i = 0; i < gestionArraylist.getArrayBalas().size(); i++) {
+					gestionArraylist.getArrayBalas().get(i).moverBala();
+					if (gestionArraylist.getArrayBalas().get(i).getBoundsInParent().getMinY() == 0) {
+						gestionArraylist.getArrayBalas().remove(i);
 					}
 				}
-
 			}
 
 		});
@@ -114,6 +114,22 @@ public class AnikilationGame extends Application {
 		timeline.play();
 		// Mostramos el escenario completo.
 		escenario.show();
+
+		// cronometro para tiempo de juego
+		TimerTask cronometro = new TimerTask() {
+			@Override
+			public void run() {
+				tiempoEnSegundos++;
+				// contador aliens
+				if (tiempoEnSegundos % 5 == 0) {
+					System.out.println("Segundos: " + String.valueOf(tiempoEnSegundos));
+					System.out.println("Aliens: " + String.valueOf(contadorAliensGenerados));
+					contadorAliensGenerados++;
+				}
+			}
+		};
+		Timer timer = new Timer();
+		timer.schedule(cronometro, 0, 1000);
 	}
 
 	/**

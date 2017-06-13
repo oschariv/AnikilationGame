@@ -36,7 +36,7 @@ public class Enemigo extends ImageView {
 		setFitWidth(ALTO_ALIEN);
 		setX(this.anchoPantalla / 2);
 		setY(50);
-		System.out.println("Alien generado");
+		// System.out.println("Alien generado");
 	}
 
 	/**
@@ -44,6 +44,10 @@ public class Enemigo extends ImageView {
 	 */
 	public void moverAlien() {
 		setTranslateY(getTranslateY() + alienSpeed);
-		System.out.println("Alien se mueve");
+		// System.out.println("Alien se mueve");
+	}
+
+	public ImageView getBounds() {
+		return this;
 	}
 }
