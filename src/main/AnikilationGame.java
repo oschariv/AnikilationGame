@@ -4,12 +4,20 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+/**
+ * Proyecto para el desarrollo de un videojuego. Tema elegido: juego de naves al
+ * estilo Space Invaders.
+ * 
+ * Clase para la ejecucion del videojuego.
+ * 
+ * @author Oscar Charro Rivera
+ * @version 1.0
+ */
 
 public class AnikilationGame extends Application {
 
@@ -24,7 +32,6 @@ public class AnikilationGame extends Application {
 	 * 
 	 * @param escenario
 	 *            obtiene el escenario a crear.
-	 * @param balaSpeed
 	 */
 	@Override
 	public void start(Stage escenario) {
@@ -35,15 +42,8 @@ public class AnikilationGame extends Application {
 		escenario.setScene(escena);
 		escenario.setTitle("ANIKILATION GAME");
 
-		// Cargamos la imagen de fondo
-		Image imagenFondo = new Image("main/fondo.png");
-
-		// Añadimos la imagen al ImageView y al panel para mostrarla.
-		ImageView fondo = new ImageView();
-		fondo.setImage(imagenFondo);
-		fondo.setFitWidth(ANCHO_PANTALLA);
-		fondo.setFitHeight(ALTO_PANTALLA);
-		root.getChildren().add(fondo);
+		// Añadimos el fondo de pantalla
+		root.getChildren().add(new Fondo(ALTO_PANTALLA, ALTO_PANTALLA));
 
 		// Creamos la nave
 		Nave naveEspacial = new Nave(ANCHO_PANTALLA, ALTO_PANTALLA);

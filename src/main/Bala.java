@@ -3,6 +3,12 @@ package main;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Clase para crear las balas que se disparan.
+ * 
+ * @author Oscar Charro Rivera
+ * @version 1.0
+ */
 public class Bala extends Rectangle {
 	// Atributos de la bala
 	private static final int ANCHO_BALA = 6;
@@ -33,6 +39,9 @@ public class Bala extends Rectangle {
 		setY(posicionYNave + ALTO_BALA);
 	}
 
+	/**
+	 * Metodo que permite mover la bala en el eje Y de la pantalla.
+	 */
 	public void moverBala() {
 		setTranslateY(getTranslateY() - balaSpeed);
 	}
