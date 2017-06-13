@@ -4,6 +4,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -33,15 +35,29 @@ public class AnikilationGame extends Application {
 		escenario.setScene(escena);
 		escenario.setTitle("ANIKILATION GAME");
 
+		// Cargamos la imagen de fondo
+		Image imagenFondo = new Image("main/fondo.png");
+
+		// Añadimos la imagen al ImageView y al panel para mostrarla.
+		ImageView fondo = new ImageView();
+		fondo.setImage(imagenFondo);
+		fondo.setFitWidth(ANCHO_PANTALLA);
+		fondo.setFitHeight(ALTO_PANTALLA);
+		root.getChildren().add(fondo);
+
 		// Creamos la nave
 		Nave naveEspacial = new Nave(ANCHO_PANTALLA, ALTO_PANTALLA);
 		root.getChildren().add(naveEspacial);
+
+		// Creamos un alien
+		Enemigo alien = new Enemigo(ANCHO_PANTALLA, ALTO_PANTALLA);
+		root.getChildren().add(alien);
 
 		// COMIENZO DE LOS EVENTOS DE TECLADO.
 		// movimiento de la nave cuando de pulsa un tecla.
 		escena.setOnKeyPressed(event -> {
 
-			if (event.getCode() == KeyCode.RIGHT && naveEspacial.getBoundsInParent().getMaxX() != escena.getWidth()) {
+			if (event.getCode() == KeyCode.RIGHT && naveEspacial.getBoundsInParent().getMaxX() != ANCHO_PANTALLA) {
 				naveEspacial.moverIzquierda();
 			} else if (event.getCode() == KeyCode.LEFT && naveEspacial.getBoundsInParent().getMinX() != 0) {
 				naveEspacial.moverDerecha();
@@ -70,8 +86,11 @@ public class AnikilationGame extends Application {
 
 			// Movimiento de la nave espacial
 			naveEspacial.Mover();
-			// Movimiento de la bala
 
+			// Movimiento alien
+			alien.moverAlien();
+
+			// Movimiento de la bala
 			if (disparo) {
 				// System.out.println("nave =" +
 				// naveEspacial.getBoundsInParent());
