@@ -1,16 +1,19 @@
 package main;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import java.util.ArrayList;
 
-public class Nave extends Rectangle {
-	// Temporal para comprobacion
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+
+public class Nave extends ImageView {
+	// Atributos de la nave
 	private static final int ANCHO_NAVE = 50;
-	private static final int ALTO_NAVE = 80;
-	private static final Color COLOR_NAVE = Color.BLUE;
+	private static final int ALTO_NAVE = 50;
 	private static int naveSpeed = 0;
 	private int anchoPantalla;
 	private int altoPantalla;
+	private ArrayList<Bala> balasDisparadas;
 
 	/**
 	 * Constructor de la nave
@@ -21,13 +24,18 @@ public class Nave extends Rectangle {
 	 *            obtiene el alto de la pantalla
 	 */
 	public Nave(int anchoPantalla, int altoPantalla) {
-		setWidth(ANCHO_NAVE);
-		setHeight(ALTO_NAVE);
-		setFill(COLOR_NAVE);
+		super();
+		Image image = new Image("main/nave.png");
+		setImage(image);
 		this.anchoPantalla = anchoPantalla;
 		this.altoPantalla = altoPantalla;
-		setX(this.anchoPantalla / 2 - getWidth() / 2);
-		setY(this.altoPantalla - getHeight() - 20);
+		setFitHeight(ANCHO_NAVE);
+		setFitWidth(ALTO_NAVE);
+		// WARNING!!! No modificar este valor bajo ningun concepto sino la bala
+		// se va a la putisima en el eje X.
+		setX(0);
+		setY(this.altoPantalla - 50);
+		balasDisparadas = new ArrayList<>();
 	}
 
 	/**
@@ -46,13 +54,36 @@ public class Nave extends Rectangle {
 	 * Metodo para mover la nave a la izquierda de la pantalla
 	 */
 	public void moverIzquierda() {
-		naveSpeed = 1;
+		naveSpeed = 3;
 	}
 
 	/**
 	 * Metodo para mover la nave a la derecha de la pantalla
 	 */
 	public void moverDerecha() {
-		naveSpeed = -1;
+		naveSpeed = -3;
+	}
+
+	/**
+	 * Metodo que establece a cero la velocidad de la nave
+	 */
+	public void velocidadNaveCero() {
+		naveSpeed = 0;
+	}
+
+	public void disparar(Pane panel) {
+		Bala bala = new Bala(getTranslateX(), getY(), this);
+		// System.out.println("bola Creada");
+		balasDisparadas.add(bala);
+		panel.getChildren().add(bala);
+	}
+
+	public Bala getBala(int i) {
+
+		return balasDisparadas.get(i);
+	}
+
+	public ArrayList<Bala> getArrayBalas() {
+		return balasDisparadas;
 	}
 }

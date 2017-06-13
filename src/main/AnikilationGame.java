@@ -14,15 +14,18 @@ public class AnikilationGame extends Application {
 	// Atributos de clase AnikilationGame
 	private static final int ANCHO_PANTALLA = 600;
 	private static final int ALTO_PANTALLA = 800;
+	private int balaSpeed = 0;
+	private boolean disparo = false;
 
 	/**
 	 * Metodo que inicia el juego.
 	 * 
 	 * @param escenario
 	 *            obtiene el escenario a crear.
+	 * @param balaSpeed
 	 */
 	@Override
-	public void start(Stage escenario) throws Exception {
+	public void start(Stage escenario) {
 
 		// Generamos el panel, la escena y lo añadimos al escenario
 		Pane root = new Pane();
@@ -34,21 +37,57 @@ public class AnikilationGame extends Application {
 		Nave naveEspacial = new Nave(ANCHO_PANTALLA, ALTO_PANTALLA);
 		root.getChildren().add(naveEspacial);
 
-		// Creamos el timeline y el KeyFrame para dar movimiento al juego.
-		Timeline timeline = new Timeline();
-		KeyFrame keyframe = new KeyFrame(Duration.seconds(0.007), event -> {
-
-			// Movimiento de la nave espacial
-			naveEspacial.Mover();
-		});
-
+		// COMIENZO DE LOS EVENTOS DE TECLADO.
+		// movimiento de la nave cuando de pulsa un tecla.
 		escena.setOnKeyPressed(event -> {
 
 			if (event.getCode() == KeyCode.RIGHT && naveEspacial.getBoundsInParent().getMaxX() != escena.getWidth()) {
 				naveEspacial.moverIzquierda();
 			} else if (event.getCode() == KeyCode.LEFT && naveEspacial.getBoundsInParent().getMinX() != 0) {
 				naveEspacial.moverDerecha();
+			} else if (event.getCode() == KeyCode.SPACE) {
+				naveEspacial.disparar(root);
+				disparo = true;
 			}
+		});
+
+		// evitamos que la nave se mueva al soltar la tecla.
+		escena.setOnKeyReleased(event -> {
+			if (event.getCode() == KeyCode.RIGHT) {
+				naveEspacial.velocidadNaveCero();
+			} else if (event.getCode() == KeyCode.LEFT) {
+				naveEspacial.velocidadNaveCero();
+			} else if (event.getCode() == KeyCode.SPACE) {
+				disparo = true;
+			}
+		});
+		// FINAL DE LOS EVENTOS DE TECLADO.
+
+		// Creamos el timeline y el KeyFrame para dar movimiento al juego.
+		Timeline timeline = new Timeline();
+		timeline.setAutoReverse(true);
+		KeyFrame keyframe = new KeyFrame(Duration.seconds(0.007), event -> {
+
+			// Movimiento de la nave espacial
+			naveEspacial.Mover();
+			// Movimiento de la bala
+
+			if (disparo) {
+				// System.out.println("nave =" +
+				// naveEspacial.getBoundsInParent());
+				for (int i = 0; i < naveEspacial.getArrayBalas().size(); i++) {
+					naveEspacial.getArrayBalas().get(i).moverBala();
+					// System.out.println("bala =" +
+					// naveEspacial.getArrayBalas().get(i).getBoundsInParent());
+
+					if (naveEspacial.getArrayBalas().get(i).getBoundsInParent().getMinY() == 0) {
+						naveEspacial.getArrayBalas().get(i).setVisible(false);
+						naveEspacial.getArrayBalas().remove(i);
+					}
+				}
+
+			}
+
 		});
 
 		timeline.getKeyFrames().add(keyframe);
@@ -67,4 +106,5 @@ public class AnikilationGame extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 }
