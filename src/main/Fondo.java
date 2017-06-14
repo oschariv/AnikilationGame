@@ -12,7 +12,7 @@ import javafx.scene.image.ImageView;
 
 public class Fondo extends ImageView {
 	// Cargamos la imagen de fondo
-	public static final String STRING_IMAGEN = "main/recursos/fondo.png";
+	public static final String STRING_IMAGEN = "main/fondo.png";
 
 	/**
 	 * Constructor de la clase Fondo.

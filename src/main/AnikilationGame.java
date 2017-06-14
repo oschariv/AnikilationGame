@@ -50,7 +50,7 @@ public class AnikilationGame extends Application {
 		escenario.setTitle("ANIKILATION GAME");
 
 		// Añadimos el fondo de pantalla
-		root.getChildren().add(new Fondo(ALTO_PANTALLA, ALTO_PANTALLA));
+		root.getChildren().add(new Fondo(ANCHO_PANTALLA, ALTO_PANTALLA));
 
 		// Creamos la nave
 		Nave naveEspacial = new Nave(ANCHO_PANTALLA, ALTO_PANTALLA);
@@ -123,10 +123,11 @@ public class AnikilationGame extends Application {
 
 			// NO FUNCIONA CORRECTAMENTE Y NO SE PORQUE.
 
-			for (int i = 0; i < enemigosGenerados.size(); i++) {
-				for (int j = 0; j < naveEspacial.getArrayBalas().size(); j++) {
+			for (int j = 0; j < naveEspacial.getArrayBalas().size(); j++) {
+				for (int i = 0; i < enemigosGenerados.size() && !enemigosGenerados.isEmpty(); i++) {
 					if (naveEspacial.getArrayBalas().get(j).aciertoAEnemigo(enemigosGenerados.get(i))) {
 						root.getChildren().remove(enemigosGenerados.get(i));
+						root.getChildren().remove(naveEspacial.getArrayBalas().get(j));
 						enemigosGenerados.remove(i);
 						naveEspacial.getArrayBalas().remove(j);
 						i--;

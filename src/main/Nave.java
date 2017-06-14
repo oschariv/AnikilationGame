@@ -14,13 +14,16 @@ import javafx.scene.layout.Pane;
  */
 public class Nave extends ImageView {
 	// Atributos de la nave
-	public static final String STRING_IMAGEN = "main/recursos/nave.png";
+	private static final String STRING_IMAGEN = "main/nave.png";
+	private static final String STRING_IMAGEN_DOS = "main/naveVelocidadCero.png";
 	private static final int ANCHO_NAVE = 50;
 	private static final int ALTO_NAVE = 50;
 	private static int naveSpeed = 0;
 	private int anchoPantalla;
 	private int altoPantalla;
 	private ArrayList<Bala> balasDisparadas;
+	private Image imagen;
+	private Image image2;
 
 	/**
 	 * Constructor de la nave
@@ -32,8 +35,9 @@ public class Nave extends ImageView {
 	 */
 	public Nave(int anchoPantalla, int altoPantalla) {
 		super();
-		Image image = new Image(STRING_IMAGEN);
-		setImage(image);
+		imagen = new Image(STRING_IMAGEN);
+		image2 = new Image(STRING_IMAGEN_DOS);
+		setImage(image2);
 		this.anchoPantalla = anchoPantalla;
 		this.altoPantalla = altoPantalla;
 		setFitHeight(ANCHO_NAVE);
@@ -53,8 +57,8 @@ public class Nave extends ImageView {
 	public void Mover() {
 		setTranslateX(getTranslateX() + naveSpeed);
 		if (getBoundsInParent().getMinX() == 0 || getBoundsInParent().getMaxX() == anchoPantalla) {
-			// System.out.println("Se ejecuta Correctamente");
 			naveSpeed = 0;
+			setImage(image2);
 		}
 	}
 
@@ -63,6 +67,7 @@ public class Nave extends ImageView {
 	 */
 	public void moverIzquierda() {
 		naveSpeed = 3;
+		setImage(imagen);
 	}
 
 	/**
@@ -70,6 +75,7 @@ public class Nave extends ImageView {
 	 */
 	public void moverDerecha() {
 		naveSpeed = -3;
+		setImage(imagen);
 	}
 
 	/**
@@ -77,6 +83,7 @@ public class Nave extends ImageView {
 	 */
 	public void velocidadNaveCero() {
 		naveSpeed = 0;
+		setImage(image2);
 	}
 
 	/**

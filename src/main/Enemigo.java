@@ -12,7 +12,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class Enemigo extends ImageView {
 	// Atributos de los enemigos
-	public static final String STRING_IMAGEN = "main/recursos/alien.png";
+	public static final String STRING_IMAGEN = "main/alien.png";
 	private static final int ANCHO_ALIEN = 50;
 	private static final int ALTO_ALIEN = 50;
 	private int alienSpeed = 2;
