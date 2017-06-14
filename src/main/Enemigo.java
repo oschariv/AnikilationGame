@@ -28,7 +28,7 @@ public class Enemigo extends ImageView {
 	 * @param altoPantalla
 	 *            obtiene el alto de la pantalla.
 	 */
-	public Enemigo(int anchoPantalla, int altoPantalla, int posicionX) {
+	public Enemigo(int anchoPantalla, int altoPantalla, int posicionX, int posicionY) {
 		super();
 		Image image = new Image(STRING_IMAGEN);
 		setImage(image);
@@ -37,7 +37,7 @@ public class Enemigo extends ImageView {
 		setFitHeight(ALTO_ALIEN);
 		setFitWidth(ANCHO_ALIEN);
 		setX((posicionX * ANCHO_ALIEN) + ANCHO_ALIEN);
-		setY(-50);
+		setY((-posicionY * ANCHO_ALIEN) + ALTO_ALIEN);
 		alienOculto = new Rectangle(getFitWidth(), getFitHeight());
 		alienOculto.setX(getX());
 		alienOculto.setY(getY());

@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -38,6 +39,9 @@ public class AnikilationGame extends Application {
 	private int contadorAliensGenerados = 1;
 	private ArrayList<Enemigo> enemigosGenerados;
 	private int puntos = 0;
+	private Timeline timeline;
+	private TimerTask cronometro;
+	private static final int NUMERO_ALIENS_A_GENERAR = 10;
 
 	/**
 	 * Metodo que inicia el juego.
@@ -46,7 +50,7 @@ public class AnikilationGame extends Application {
 	 *            obtiene el escenario a crear.
 	 */
 	@Override
-	public void start(Stage escenario) {
+	public void start(Stage escenario) throws InterruptedException {
 
 		// Generamos el panel, la escena y lo añadimos al escenario
 		Pane root = new Pane();
@@ -63,13 +67,43 @@ public class AnikilationGame extends Application {
 
 		enemigosGenerados = new ArrayList<>();
 		// Creamos un alien
-		Random aleatorio = new Random();
-		int posicionX = aleatorio.nextInt(10);
-		Enemigo posibleEnemigo = new Enemigo(ANCHO_PANTALLA, ALTO_PANTALLA, posicionX);
-		enemigosGenerados.add(posibleEnemigo);
-		root.getChildren().add(posibleEnemigo);
+		// Random aleatorio = new Random();
+		// int posicionX = aleatorio.nextInt(10);
+		// Enemigo posibleEnemigo = new Enemigo(ANCHO_PANTALLA, ALTO_PANTALLA,
+		// posicionX);
+		// enemigosGenerados.add(posibleEnemigo);
+		// root.getChildren().add(posibleEnemigo);
 
 		System.out.println("Añade alien");
+
+		int numeroAliensAnidados = 0;
+		while (numeroAliensAnidados < NUMERO_ALIENS_A_GENERAR) {
+			boolean encontradoAlienValido = false;
+			while (!encontradoAlienValido) {
+				Random aleatorio = new Random();
+				int posicionX = aleatorio.nextInt(10);
+				int posicionY = aleatorio.nextInt(10);
+				Enemigo posibleEnemigo = new Enemigo(ANCHO_PANTALLA, ALTO_PANTALLA, posicionX, posicionY);
+				int alienActual = 0;
+				boolean solapamientoDetectado = false;
+				while (alienActual < enemigosGenerados.size() && !solapamientoDetectado) {
+					if (posibleEnemigo.intersects(enemigosGenerados.get(alienActual).getX(),
+							enemigosGenerados.get(alienActual).getY(), enemigosGenerados.get(alienActual).getFitWidth(),
+							enemigosGenerados.get(alienActual).getFitHeight())) {
+						solapamientoDetectado = true;
+					}
+					alienActual++;
+				}
+				// Si hemos encontrado un ladrillo Valido
+				if (!solapamientoDetectado) {
+					encontradoAlienValido = true;
+					enemigosGenerados.add(posibleEnemigo);
+					root.getChildren().add(posibleEnemigo);
+
+				}
+			}
+			numeroAliensAnidados++;
+		}
 
 		// COMIENZO DE LOS EVENTOS DE TECLADO.
 		// movimiento de la nave cuando de pulsa un tecla.
@@ -84,6 +118,15 @@ public class AnikilationGame extends Application {
 				disparo = true;
 			} else if (event.getCode() == KeyCode.ESCAPE) {
 				System.exit(0);
+			} else if (event.getCode() == KeyCode.P) {
+				if (timeline.getStatus().equals(Animation.Status.RUNNING)) {
+					timeline.stop();
+					escenario.setTitle("ANIKILATION GAME (PAUSE)");
+
+				} else {
+					timeline.play();
+					escenario.setTitle("ANIKILATION GAME");
+				}
 			}
 		});
 
@@ -108,7 +151,7 @@ public class AnikilationGame extends Application {
 		root.getChildren().add(puntuacion);
 
 		// Creamos el timeline y el KeyFrame para dar movimiento al juego.
-		Timeline timeline = new Timeline();
+		timeline = new Timeline();
 		timeline.setAutoReverse(true);
 		KeyFrame keyframe = new KeyFrame(Duration.seconds(0.007), event -> {
 
@@ -163,15 +206,19 @@ public class AnikilationGame extends Application {
 			tiempoPasado.setLayoutY(ALTO_PANTALLA - 20);
 
 			// SALIDA BOLA POR DEBAJO DE LA PANTALLA.
-			if (naveEspacial.eliminacionPorEnemigo(posibleEnemigo) || enemigosGenerados.isEmpty()) {
-				Label GOMessage = new Label("GAME OVER!" + "\nPuntucacion: " + puntos);
-				GOMessage.setFont(Font.font("Courier New", FontWeight.BOLD, 54));
-				GOMessage.setTextFill(Color.WHITE);
-				root.getChildren().add(GOMessage);
-				GOMessage.layoutXProperty().bind(root.widthProperty().subtract(GOMessage.widthProperty()).divide(2));
-				GOMessage.layoutYProperty().bind(root.heightProperty().subtract(GOMessage.heightProperty()).divide(2));
-				escenario.setTitle("ARKANOID (GAME OVER)");
-				timeline.stop();
+			for (int i = 0; i < enemigosGenerados.size(); i++) {
+				if (naveEspacial.eliminacionPorEnemigo(enemigosGenerados.get(i)) || enemigosGenerados.isEmpty()) {
+					Label GOMessage = new Label("GAME OVER!" + "\nPuntucacion: " + puntos);
+					GOMessage.setFont(Font.font("Courier New", FontWeight.BOLD, 54));
+					GOMessage.setTextFill(Color.WHITE);
+					root.getChildren().add(GOMessage);
+					GOMessage.layoutXProperty()
+							.bind(root.widthProperty().subtract(GOMessage.widthProperty()).divide(2));
+					GOMessage.layoutYProperty()
+							.bind(root.heightProperty().subtract(GOMessage.heightProperty()).divide(2));
+					escenario.setTitle("ARKANOID (GAME OVER)");
+					timeline.stop();
+				}
 			}
 
 		});
@@ -184,18 +231,16 @@ public class AnikilationGame extends Application {
 		escenario.show();
 
 		// cronometro para tiempo de juego
-		TimerTask cronometro = new TimerTask() {
+		cronometro = new TimerTask() {
 
 			@Override
 			public void run() {
 				tiempoEnSegundos++;
-				if (tiempoEnSegundos % 5 == 0) {
-					contadorAliensGenerados++;
-				}
 			}
 		};
 		Timer timer = new Timer();
 		timer.schedule(cronometro, 0, 1000);
+
 	}
 
 	/**

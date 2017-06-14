@@ -48,7 +48,7 @@ public class Nave extends ImageView {
 		// WARNING!!! No modificar este valor bajo ningun concepto sino la bala
 		// se va a la putisima en el eje X.
 		setX(0);
-		setY(this.altoPantalla - 50);
+		setY(this.altoPantalla - 65);
 		naveOculta = new Rectangle(getFitWidth(), getFitHeight());
 		naveOculta.setX(getX());
 		naveOculta.setY(getY());
