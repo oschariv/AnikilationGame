@@ -49,7 +49,7 @@ public class Bala extends Rectangle {
 
 	public boolean aciertoAEnemigo(Enemigo enemigo) {
 		boolean colision = false;
-		Shape interseccion = Shape.intersect(this, enemigo.getColision());
+		Shape interseccion = Shape.intersect(this, enemigo.getAlienOculto());
 		if (interseccion.getBoundsInParent().getWidth() != -1) {
 			colision = true;
 		}

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 /**
  * Clase para crear la nave del videojuego.
@@ -24,6 +26,7 @@ public class Nave extends ImageView {
 	private ArrayList<Bala> balasDisparadas;
 	private Image imagen;
 	private Image image2;
+	private Rectangle naveOculta;
 
 	/**
 	 * Constructor de la nave
@@ -46,6 +49,10 @@ public class Nave extends ImageView {
 		// se va a la putisima en el eje X.
 		setX(0);
 		setY(this.altoPantalla - 50);
+		naveOculta = new Rectangle(getFitWidth(), getFitHeight());
+		naveOculta.setX(getX());
+		naveOculta.setY(getY());
+
 		balasDisparadas = new ArrayList<>();
 	}
 
@@ -56,7 +63,7 @@ public class Nave extends ImageView {
 	 */
 	public void Mover() {
 		setTranslateX(getTranslateX() + naveSpeed);
-		if (getBoundsInParent().getMinX() == 0 || getBoundsInParent().getMaxX() == anchoPantalla) {
+		if (getBoundsInParent().getMinX() == 0 || this.getBoundsInParent().getMaxX() == anchoPantalla) {
 			naveSpeed = 0;
 			setImage(image2);
 		}
@@ -86,6 +93,19 @@ public class Nave extends ImageView {
 		setImage(image2);
 	}
 
+	public Rectangle getNaveOculta() {
+		return naveOculta;
+	}
+
+	public boolean eliminacionPorEnemigo(Enemigo enemigo) {
+		boolean colision = false;
+		Shape interseccion = Shape.intersect(getNaveOculta(), enemigo.getAlienOculto());
+		if (interseccion.getBoundsInParent().getWidth() != -1) {
+			colision = true;
+		}
+		return colision;
+	}
+
 	/**
 	 * Metodo que dispara las balas.
 	 * 
@@ -94,7 +114,6 @@ public class Nave extends ImageView {
 	 */
 	public void dispararBala(Pane panel) {
 		Bala bala = new Bala(getTranslateX(), getY(), ANCHO_NAVE);
-		// System.out.println("bola Creada");
 		balasDisparadas.add(bala);
 		panel.getChildren().add(bala);
 	}

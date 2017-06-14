@@ -18,7 +18,7 @@ public class Enemigo extends ImageView {
 	private int alienSpeed = 2;
 	private int anchoPantalla;
 	private int altoPantalla;
-	private Rectangle colision;
+	private Rectangle alienOculto;
 
 	/**
 	 * Constructor de la clase Enemigo
@@ -38,9 +38,9 @@ public class Enemigo extends ImageView {
 		setFitWidth(ANCHO_ALIEN);
 		setX((posicionX * ANCHO_ALIEN) + ANCHO_ALIEN);
 		setY(-50);
-		colision = new Rectangle(getFitWidth(), getFitHeight());
-		colision.setX(getX());
-		colision.setY(getY());
+		alienOculto = new Rectangle(getFitWidth(), getFitHeight());
+		alienOculto.setX(getX());
+		alienOculto.setY(getY());
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class Enemigo extends ImageView {
 		setTranslateY(getTranslateY() + alienSpeed);
 	}
 
-	public Rectangle getColision() {
-		return colision;
+	public Rectangle getAlienOculto() {
+		return alienOculto;
 	}
 }
