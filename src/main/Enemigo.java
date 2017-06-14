@@ -2,6 +2,7 @@ package main;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 
 /**
  * Clase para generar los enimgos.
@@ -11,32 +12,35 @@ import javafx.scene.image.ImageView;
  */
 public class Enemigo extends ImageView {
 	// Atributos de los enemigos
-	public static final String STRING_IMAGEN = "main/alien.png";
+	public static final String STRING_IMAGEN = "main/recursos/alien.png";
 	private static final int ANCHO_ALIEN = 50;
 	private static final int ALTO_ALIEN = 50;
 	private int alienSpeed = 2;
 	private int anchoPantalla;
 	private int altoPantalla;
+	private Rectangle colision;
 
 	/**
 	 * Constructor de la clase Enemigo
 	 * 
-	 * @param anchoPantalla
+	 * @param root
 	 *            obtiene el ancho de la pantalla.
 	 * @param altoPantalla
 	 *            obtiene el alto de la pantalla.
 	 */
-	public Enemigo(int anchoPantalla, int altoPantalla) {
+	public Enemigo(int anchoPantalla, int altoPantalla, int posicionX) {
 		super();
 		Image image = new Image(STRING_IMAGEN);
 		setImage(image);
 		this.anchoPantalla = anchoPantalla;
 		this.altoPantalla = altoPantalla;
-		setFitHeight(ANCHO_ALIEN);
-		setFitWidth(ALTO_ALIEN);
-		setX(this.anchoPantalla / 2);
-		setY(50);
-		// System.out.println("Alien generado");
+		setFitHeight(ALTO_ALIEN);
+		setFitWidth(ANCHO_ALIEN);
+		setX((posicionX * ANCHO_ALIEN) + ANCHO_ALIEN);
+		setY(-50);
+		colision = new Rectangle(getFitWidth(), getFitHeight());
+		colision.setX(getX());
+		colision.setY(getY());
 	}
 
 	/**
@@ -44,10 +48,9 @@ public class Enemigo extends ImageView {
 	 */
 	public void moverAlien() {
 		setTranslateY(getTranslateY() + alienSpeed);
-		// System.out.println("Alien se mueve");
 	}
 
-	public ImageView getBounds() {
-		return this;
+	public Rectangle getColision() {
+		return colision;
 	}
 }

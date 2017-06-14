@@ -1,5 +1,7 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,6 +32,7 @@ public class AnikilationGame extends Application {
 	private boolean disparo = false;
 	private int tiempoEnSegundos = 0;
 	private int contadorAliensGenerados = 1;
+	private ArrayList<Enemigo> enemigosGenerados;
 
 	/**
 	 * Metodo que inicia el juego.
@@ -53,12 +56,14 @@ public class AnikilationGame extends Application {
 		Nave naveEspacial = new Nave(ANCHO_PANTALLA, ALTO_PANTALLA);
 		root.getChildren().add(naveEspacial);
 
-		// Creamos un objeto para la gestion de arrayList.
-		GestionArrayList gestionArraylist = new GestionArrayList();
-
+		enemigosGenerados = new ArrayList<>();
 		// Creamos un alien
-		Enemigo alien = new Enemigo(ANCHO_PANTALLA, ALTO_PANTALLA);
-		root.getChildren().add(alien);
+		Random aleatorio = new Random();
+		int posicionX = aleatorio.nextInt(10);
+		Enemigo posibleEnemigo = new Enemigo(ANCHO_PANTALLA, ALTO_PANTALLA, posicionX);
+		enemigosGenerados.add(posibleEnemigo);
+		root.getChildren().add(posibleEnemigo);
+		System.out.println("Añade alien");
 
 		// COMIENZO DE LOS EVENTOS DE TECLADO.
 		// movimiento de la nave cuando de pulsa un tecla.
@@ -69,8 +74,10 @@ public class AnikilationGame extends Application {
 			} else if (event.getCode() == KeyCode.LEFT && naveEspacial.getBoundsInParent().getMinX() != 0) {
 				naveEspacial.moverDerecha();
 			} else if (event.getCode() == KeyCode.SPACE) {
-				gestionArraylist.dispararBala(root, naveEspacial);
+				naveEspacial.dispararBala(root);
 				disparo = true;
+			} else if (event.getCode() == KeyCode.ESCAPE) {
+				System.exit(0);
 			}
 		});
 
@@ -95,14 +102,35 @@ public class AnikilationGame extends Application {
 			naveEspacial.Mover();
 
 			// Movimiento alien
-			alien.moverAlien();
+			for (int i = 0; i < enemigosGenerados.size(); i++) {
+				enemigosGenerados.get(i).moverAlien();
+				if (enemigosGenerados.get(i).getY() > ALTO_PANTALLA) {
+					enemigosGenerados.remove(i);
+				}
+			}
 
 			// Movimiento de la bala
 			if (disparo) {
-				for (int i = 0; i < gestionArraylist.getArrayBalas().size(); i++) {
-					gestionArraylist.getArrayBalas().get(i).moverBala();
-					if (gestionArraylist.getArrayBalas().get(i).getBoundsInParent().getMinY() == 0) {
-						gestionArraylist.getArrayBalas().remove(i);
+				for (int i = 0; i < naveEspacial.getArrayBalas().size(); i++) {
+					naveEspacial.getArrayBalas().get(i).moverBala();
+					if (naveEspacial.getArrayBalas().get(i).getY() < 0) {
+						naveEspacial.getArrayBalas().remove(i);
+					}
+				}
+			}
+
+			// Desctruccion Aliens
+
+			// NO FUNCIONA CORRECTAMENTE Y NO SE PORQUE.
+
+			for (int i = 0; i < enemigosGenerados.size(); i++) {
+				for (int j = 0; j < naveEspacial.getArrayBalas().size(); j++) {
+					if (naveEspacial.getArrayBalas().get(j).aciertoAEnemigo(enemigosGenerados.get(i))) {
+						root.getChildren().remove(enemigosGenerados.get(i));
+						enemigosGenerados.remove(i);
+						naveEspacial.getArrayBalas().remove(j);
+						i--;
+						j--;
 					}
 				}
 			}
@@ -112,18 +140,20 @@ public class AnikilationGame extends Application {
 		timeline.getKeyFrames().add(keyframe);
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		timeline.play();
+
 		// Mostramos el escenario completo.
 		escenario.show();
 
 		// cronometro para tiempo de juego
 		TimerTask cronometro = new TimerTask() {
+
 			@Override
 			public void run() {
 				tiempoEnSegundos++;
+
+				System.out.println("Segundos: " + String.valueOf(tiempoEnSegundos));
 				// contador aliens
 				if (tiempoEnSegundos % 5 == 0) {
-					System.out.println("Segundos: " + String.valueOf(tiempoEnSegundos));
-					System.out.println("Aliens: " + String.valueOf(contadorAliensGenerados));
 					contadorAliensGenerados++;
 				}
 			}

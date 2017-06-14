@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
 /**
  * Clase para crear la nave del videojuego.
@@ -13,7 +14,7 @@ import javafx.scene.image.ImageView;
  */
 public class Nave extends ImageView {
 	// Atributos de la nave
-	public static final String STRING_IMAGEN = "main/nave.png";
+	public static final String STRING_IMAGEN = "main/recursos/nave.png";
 	private static final int ANCHO_NAVE = 50;
 	private static final int ALTO_NAVE = 50;
 	private static int naveSpeed = 0;
@@ -78,4 +79,25 @@ public class Nave extends ImageView {
 		naveSpeed = 0;
 	}
 
+	/**
+	 * Metodo que dispara las balas.
+	 * 
+	 * @param panel
+	 *            obtiene el panel para añidir las balas.
+	 */
+	public void dispararBala(Pane panel) {
+		Bala bala = new Bala(getTranslateX(), getY(), ANCHO_NAVE);
+		// System.out.println("bola Creada");
+		balasDisparadas.add(bala);
+		panel.getChildren().add(bala);
+	}
+
+	/**
+	 * Metodo que devuelve el array donde se guardan las balas.
+	 * 
+	 * @return El ArrayList que contiene las balas.
+	 */
+	public ArrayList<Bala> getArrayBalas() {
+		return balasDisparadas;
+	}
 }

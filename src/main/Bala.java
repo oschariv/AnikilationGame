@@ -2,6 +2,7 @@ package main;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 /**
  * Clase para crear las balas que se disparan.
@@ -26,7 +27,7 @@ public class Bala extends Rectangle {
 	 * @param altoPantalla
 	 *            obtiene el alto de la pantalla
 	 */
-	public Bala(double posicionXNave, double posicionYNave, Nave nave) {
+	public Bala(double posicionXNave, double posicionYNave, int anchoNave) {
 		super();
 		setWidth(ANCHO_BALA);
 		setHeight(ALTO_BALA);
@@ -35,7 +36,7 @@ public class Bala extends Rectangle {
 		setArcHeight(ARCO_BALA);
 		setArcWidth(ARCO_BALA);
 		setVisible(true);
-		setX(nave.getTranslateX() + nave.getFitWidth() / 2 - ANCHO_BALA / 2);
+		setX(posicionXNave + anchoNave / 2 - ANCHO_BALA / 2);
 		setY(posicionYNave + ALTO_BALA);
 	}
 
@@ -46,4 +47,12 @@ public class Bala extends Rectangle {
 		setTranslateY(getTranslateY() - balaSpeed);
 	}
 
+	public boolean aciertoAEnemigo(Enemigo enemigo) {
+		boolean colision = false;
+		Shape interseccion = Shape.intersect(this, enemigo.getColision());
+		if (interseccion.getBoundsInParent().getWidth() != -1) {
+			colision = true;
+		}
+		return colision;
+	}
 }
