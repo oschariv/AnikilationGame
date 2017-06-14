@@ -50,6 +50,11 @@ public class Enemigo extends ImageView {
 		setTranslateY(getTranslateY() + alienSpeed);
 	}
 
+	/**
+	 * Metodo que devuelve el Rectangle que forma parte del alien.
+	 * 
+	 * @return El objeto Rectangle del alien.
+	 */
 	public Rectangle getAlienOculto() {
 		return alienOculto;
 	}

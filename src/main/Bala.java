@@ -47,6 +47,15 @@ public class Bala extends Rectangle {
 		setTranslateY(getTranslateY() - balaSpeed);
 	}
 
+	/**
+	 * Metodo que detecta si se produce la colision que se genera de impactar la
+	 * bala contra el alien.
+	 * 
+	 * @param enemigo
+	 *            Obtiene el objeto Enemigo.
+	 * @return Un booleano, true si se produce la colision o false si no se
+	 *         produce.
+	 */
 	public boolean aciertoAEnemigo(Enemigo enemigo) {
 		boolean colision = false;
 		Shape interseccion = Shape.intersect(this, enemigo.getAlienOculto());

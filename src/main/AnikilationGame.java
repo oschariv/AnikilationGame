@@ -36,7 +36,6 @@ public class AnikilationGame extends Application {
 	private static final int ALTO_PANTALLA = 800;
 	private boolean disparo = false;
 	private int tiempoEnSegundos = 0;
-	private int contadorAliensGenerados = 1;
 	private ArrayList<Enemigo> enemigosGenerados;
 	private int puntos = 0;
 	private Timeline timeline;
@@ -65,17 +64,8 @@ public class AnikilationGame extends Application {
 		Nave naveEspacial = new Nave(ANCHO_PANTALLA, ALTO_PANTALLA);
 		root.getChildren().add(naveEspacial);
 
+		// Creamos los aliens
 		enemigosGenerados = new ArrayList<>();
-		// Creamos un alien
-		// Random aleatorio = new Random();
-		// int posicionX = aleatorio.nextInt(10);
-		// Enemigo posibleEnemigo = new Enemigo(ANCHO_PANTALLA, ALTO_PANTALLA,
-		// posicionX);
-		// enemigosGenerados.add(posibleEnemigo);
-		// root.getChildren().add(posibleEnemigo);
-
-		System.out.println("Añade alien");
-
 		int numeroAliensAnidados = 0;
 		while (numeroAliensAnidados < NUMERO_ALIENS_A_GENERAR) {
 			boolean encontradoAlienValido = false;
@@ -94,12 +84,11 @@ public class AnikilationGame extends Application {
 					}
 					alienActual++;
 				}
-				// Si hemos encontrado un ladrillo Valido
+				// Si hemos encontrado un Alien Valido
 				if (!solapamientoDetectado) {
 					encontradoAlienValido = true;
 					enemigosGenerados.add(posibleEnemigo);
 					root.getChildren().add(posibleEnemigo);
-
 				}
 			}
 			numeroAliensAnidados++;
@@ -187,8 +176,10 @@ public class AnikilationGame extends Application {
 						enemigosGenerados.remove(i);
 						naveEspacial.getArrayBalas().remove(j);
 						puntos += 10;
-						i--;
-						j--;
+						if (i != 0 || j != 0) {
+							i--;
+							j--;
+						}
 					}
 				}
 			}

@@ -93,10 +93,24 @@ public class Nave extends ImageView {
 		setImage(image2);
 	}
 
+	/**
+	 * Metodo que devuelve el Rectangle que forma parte de la nave.
+	 * 
+	 * @return El objeto Rectangle de la Nave.
+	 */
 	public Rectangle getNaveOculta() {
 		return naveOculta;
 	}
 
+	/**
+	 * Metodo que detecta si se produce la colision que se genera de impactar el
+	 * alien contra la nave.
+	 * 
+	 * @param enemigo
+	 *            Obtiene el objeto Enemigo.
+	 * @return Un booleano, true si se produce la colision o false si no se
+	 *         produce.
+	 */
 	public boolean eliminacionPorEnemigo(Enemigo enemigo) {
 		boolean colision = false;
 		Shape interseccion = Shape.intersect(getNaveOculta(), enemigo.getAlienOculto());
