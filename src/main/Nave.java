@@ -27,6 +27,8 @@ public class Nave extends ImageView {
 	private Image imagen;
 	private Image image2;
 	private Rectangle naveOculta;
+	private static final int ANCHO_DIBUJO_N_O = 21;
+	private static final int ALTO_DIBUJO_N_O = 30;
 
 	/**
 	 * Constructor de la nave
@@ -49,9 +51,9 @@ public class Nave extends ImageView {
 		// se va a la putisima en el eje X.
 		setX(0);
 		setY(this.altoPantalla - 65);
-		naveOculta = new Rectangle(getFitWidth(), getFitHeight());
-		naveOculta.setX(getX());
-		naveOculta.setY(getY());
+		naveOculta = new Rectangle(ANCHO_DIBUJO_N_O, ALTO_DIBUJO_N_O);
+		naveOculta.setX(getX() + ((ANCHO_NAVE - ANCHO_DIBUJO_N_O) / 2));
+		naveOculta.setY(getY() + ((ALTO_NAVE - ALTO_DIBUJO_N_O) / 2));
 
 		balasDisparadas = new ArrayList<>();
 	}

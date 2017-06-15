@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
@@ -56,6 +57,7 @@ public class AnikilationGame extends Application {
 		Scene escena = new Scene(root, ANCHO_PANTALLA, ALTO_PANTALLA);
 		escenario.setScene(escena);
 		escenario.setTitle("ANIKILATION GAME");
+		escenario.initStyle(StageStyle.UNDECORATED);
 
 		// Añadimos el fondo de pantalla
 		root.getChildren().add(new Fondo(ANCHO_PANTALLA, ALTO_PANTALLA));
@@ -201,8 +203,9 @@ public class AnikilationGame extends Application {
 			// SALIDA BOLA POR DEBAJO DE LA PANTALLA.
 
 			if (enemigosGenerados.isEmpty()) {
-				Label GOMessage = new Label("   GAME OVER!" + "\nPuntucacion: " + puntos);
-				GOMessage.setFont(Font.font("Courier New", FontWeight.BOLD, 54));
+				Label GOMessage = new Label(
+						"     GAME OVER!" + "\n  Puntucacion: " + puntos + "\nTecla ESC para salir");
+				GOMessage.setFont(Font.font("Courier New", FontWeight.BOLD, 48));
 				GOMessage.setTextFill(Color.WHITE);
 				root.getChildren().add(GOMessage);
 				GOMessage.layoutXProperty().bind(root.widthProperty().subtract(GOMessage.widthProperty()).divide(2));
@@ -214,8 +217,9 @@ public class AnikilationGame extends Application {
 			for (int i = 0; i < enemigosGenerados.size(); i++) {
 				if (naveEspacial.eliminacionPorEnemigo(enemigosGenerados.get(i))) {
 					// Mostramos mensaje de GAME OVER
-					Label GOMessage = new Label("   GAME OVER!" + "\nPuntucacion: " + puntos);
-					GOMessage.setFont(Font.font("Courier New", FontWeight.BOLD, 54));
+					Label GOMessage = new Label(
+							"     GAME OVER!" + "\n  Puntucacion: " + puntos + "\nTecla ESC para salir");
+					GOMessage.setFont(Font.font("Courier New", FontWeight.BOLD, 48));
 					GOMessage.setTextFill(Color.WHITE);
 					root.getChildren().add(GOMessage);
 					GOMessage.layoutXProperty()
