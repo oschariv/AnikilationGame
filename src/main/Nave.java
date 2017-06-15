@@ -63,9 +63,15 @@ public class Nave extends ImageView {
 	 */
 	public void Mover() {
 		setTranslateX(getTranslateX() + naveSpeed);
-		if (getBoundsInParent().getMinX() == 0 || this.getBoundsInParent().getMaxX() == anchoPantalla) {
+
+		if (getBoundsInParent().getMinX() == 0 || getBoundsInParent().getMaxX() == anchoPantalla) {
 			naveSpeed = 0;
 			setImage(image2);
+		}
+		naveOculta.setTranslateX(getTranslateX() + naveSpeed);
+		if (naveOculta.getBoundsInParent().getMinX() == 0
+				|| naveOculta.getBoundsInParent().getMaxX() == anchoPantalla) {
+			naveSpeed = 0;
 		}
 	}
 

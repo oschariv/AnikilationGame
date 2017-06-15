@@ -40,7 +40,7 @@ public class AnikilationGame extends Application {
 	private int puntos = 0;
 	private Timeline timeline;
 	private TimerTask cronometro;
-	private static final int NUMERO_ALIENS_A_GENERAR = 10;
+	private static final int NUMERO_ALIENS_A_GENERAR = 20;
 
 	/**
 	 * Metodo que inicia el juego.
@@ -199,9 +199,22 @@ public class AnikilationGame extends Application {
 			tiempoPasado.setLayoutY(ALTO_PANTALLA - 20);
 
 			// SALIDA BOLA POR DEBAJO DE LA PANTALLA.
+
+			if (enemigosGenerados.isEmpty()) {
+				Label GOMessage = new Label("   GAME OVER!" + "\nPuntucacion: " + puntos);
+				GOMessage.setFont(Font.font("Courier New", FontWeight.BOLD, 54));
+				GOMessage.setTextFill(Color.WHITE);
+				root.getChildren().add(GOMessage);
+				GOMessage.layoutXProperty().bind(root.widthProperty().subtract(GOMessage.widthProperty()).divide(2));
+				GOMessage.layoutYProperty().bind(root.heightProperty().subtract(GOMessage.heightProperty()).divide(2));
+				escenario.setTitle("ARKANOID (GAME OVER)");
+				timeline.stop();
+			}
+
 			for (int i = 0; i < enemigosGenerados.size(); i++) {
-				if (naveEspacial.eliminacionPorEnemigo(enemigosGenerados.get(i)) || enemigosGenerados.isEmpty()) {
-					Label GOMessage = new Label("GAME OVER!" + "\nPuntucacion: " + puntos);
+				if (naveEspacial.eliminacionPorEnemigo(enemigosGenerados.get(i))) {
+					// Mostramos mensaje de GAME OVER
+					Label GOMessage = new Label("   GAME OVER!" + "\nPuntucacion: " + puntos);
 					GOMessage.setFont(Font.font("Courier New", FontWeight.BOLD, 54));
 					GOMessage.setTextFill(Color.WHITE);
 					root.getChildren().add(GOMessage);
@@ -211,6 +224,11 @@ public class AnikilationGame extends Application {
 							.bind(root.heightProperty().subtract(GOMessage.heightProperty()).divide(2));
 					escenario.setTitle("ARKANOID (GAME OVER)");
 					timeline.stop();
+					// Removemos alien y nave de la pantalla
+					root.getChildren().remove(enemigosGenerados.get(i));
+					root.getChildren().remove(naveEspacial);
+					enemigosGenerados.remove(i);
+
 				}
 			}
 
