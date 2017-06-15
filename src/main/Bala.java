@@ -17,7 +17,7 @@ public class Bala extends Rectangle {
 	private static final Color COLOR_FONDO_BALA = Color.YELLOW;
 	private static final Color COLOR_BORDE_BALA = Color.RED;
 	private static final int ARCO_BALA = 20;
-	private int balaSpeed = 5;
+	private int balaSpeed = 2;
 
 	/**
 	 * Constructor para bala

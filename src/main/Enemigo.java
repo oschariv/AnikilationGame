@@ -15,7 +15,7 @@ public class Enemigo extends ImageView {
 	public static final String STRING_IMAGEN = "main/alien.png";
 	private static final int ANCHO_ALIEN = 50;
 	private static final int ALTO_ALIEN = 50;
-	private int alienSpeed = 2;
+	private int alienSpeed = 1;
 	private int anchoPantalla;
 	private int altoPantalla;
 	private Rectangle alienOculto;
@@ -48,6 +48,7 @@ public class Enemigo extends ImageView {
 	 */
 	public void moverAlien() {
 		setTranslateY(getTranslateY() + alienSpeed);
+		alienOculto.setTranslateY(getTranslateY() + alienSpeed);
 	}
 
 	/**

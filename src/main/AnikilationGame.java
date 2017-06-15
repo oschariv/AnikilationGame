@@ -142,7 +142,7 @@ public class AnikilationGame extends Application {
 		// Creamos el timeline y el KeyFrame para dar movimiento al juego.
 		timeline = new Timeline();
 		timeline.setAutoReverse(true);
-		KeyFrame keyframe = new KeyFrame(Duration.seconds(0.007), event -> {
+		KeyFrame keyframe = new KeyFrame(Duration.millis(3), event -> {
 
 			// Movimiento de la nave espacial
 			naveEspacial.Mover();
@@ -176,8 +176,10 @@ public class AnikilationGame extends Application {
 						enemigosGenerados.remove(i);
 						naveEspacial.getArrayBalas().remove(j);
 						puntos += 10;
-						if (i != 0 || j != 0) {
+						if (i != 0) {
 							i--;
+						}
+						if (j != 0) {
 							j--;
 						}
 					}

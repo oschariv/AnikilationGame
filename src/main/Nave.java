@@ -73,7 +73,7 @@ public class Nave extends ImageView {
 	 * Metodo para mover la nave a la izquierda de la pantalla
 	 */
 	public void moverIzquierda() {
-		naveSpeed = 3;
+		naveSpeed = 2;
 		setImage(imagen);
 	}
 
@@ -81,7 +81,7 @@ public class Nave extends ImageView {
 	 * Metodo para mover la nave a la derecha de la pantalla
 	 */
 	public void moverDerecha() {
-		naveSpeed = -3;
+		naveSpeed = -2;
 		setImage(imagen);
 	}
 
